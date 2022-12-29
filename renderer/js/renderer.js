@@ -1,17 +1,13 @@
-const video = document.querySelector('#stream-vid');
-const selectSrcBtn = document.getElementById('selectSrcBtn');
-
 
 // Global state
 let mediaRecorder; // MediaRecorder instance to capture footage
-const recordedChunks = [];
 
 // Buttons
 const videoElement = document.querySelector('video');
 
 const startBtn = document.getElementById('startBtn');
 startBtn.onclick = e => {
-  mediaRecorder.start();
+  mediaRecorder.start(1000);
   startBtn.classList.add('is-danger');
   startBtn.innerText = 'Recording';
 };
@@ -37,7 +33,8 @@ function getVideoSources() {
 // Change the videoSource window to record
 async function selectSource(source) {
 
-  videoSelectBtn.innerText = source.name;
+  winName = source.name;
+  videoSelectBtn.innerText = winName;
 
   const constraints = {
     audio: false,
@@ -50,50 +47,37 @@ async function selectSource(source) {
   };
 
   // Create a Stream
-  const stream = await navigator.mediaDevices
-    .getUserMedia(constraints);
+  stream = await navigator.mediaDevices.getUserMedia(constraints);
 
   // Preview the source in a video element
   videoElement.srcObject = stream;
   videoElement.play();
 
   // Create the Media Recorder
-  const options = { mimeType: 'video/webm; codecs=vp9' };
+  const options = { mimeType: 'video/webm' };
   mediaRecorder = new MediaRecorder(stream, options);
 
   // Register Event Handlers
   mediaRecorder.ondataavailable = handleDataAvailable;
-  mediaRecorder.onstop = handleStop;
 
   // Updates the UI
 }
 
-// Captures all recorded chunks
-function handleDataAvailable(e) {
-  console.log('video data available');
-  recordedChunks.push(e.data);
-}
+// Sends data for categorization for every timeslice
+async function handleDataAvailable(e) {
 
-// Saves the video file on stop
-async function handleStop(e) {
-  const blob = new Blob(recordedChunks, {
-    type: 'video/webm; codecs=vp9'
+  const blob = new Blob([e.data], {
+    type: 'video/webm'
   });
 
   const buffer = Buffer.from(await blob.arrayBuffer());
+  const fileName = 'vid-'.concat(Date.now().toString(), '.webm');
+  const filePath = path.join(path.backendDir(), fileName);
 
-  const { filePath } = await dialog.showSaveDialog({
-    buttonLabel: 'Save video',
-    defaultPath: `vid-${Date.now()}.webm`
-  });
-
-  if (filePath) {
-    writeFile(filePath, buffer, () => console.log('video saved successfully!'));
-  }
+  fs.writeFile(filePath, buffer, () => console.log('video snippet saved successfully!'));
+  ipcRenderer.send('catFrame', filePath);
 
 }
-
-
 
 function startStream() {
   ipcRenderer.send('stream:start');
@@ -106,7 +90,7 @@ function openSourceSelectWindow() {
 // Event listensers
 
 // Camera stream start listener
-startBtn.addEventListener('click', startStream);
+//startBtn.addEventListener('click', startStream);
 
 // Select Source 
-selectSrcBtn.addEventListener('click', openSourceSelectWindow);
+//selectSrcBtn.addEventListener('click', openSourceSelectWindow);
