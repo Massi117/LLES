@@ -1,8 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, desktopCapturer } = require('electron');
 const { PythonShell } = require('python-shell');
 const path = require('path');
-const fs = require('fs');
-const { writeFile, fstat } = require('fs');
+const { writeFile, unlink } = require('fs');
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
@@ -72,9 +71,58 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createMainWindow()
+      window.webContents.send('ping', 'whoooooooh!')
     }
   });
 });
+
+// Catergorize and display a frame
+ipcMain.on('catFrame', async (event, filePath) => {
+
+  let options = {
+    mode: 'text',
+    pythonOptions: ['-u'],
+    scriptPath: 'backend',
+    args: [filePath],
+  };
+
+  PythonShell.run('main.py', options, function (err, results) {
+    if(err) throw err;
+    for (let i = 0; i < results.length; i++) {
+      console.log(results[i]);
+      if (results[i] == 'categorization complete') {
+        unlink(filePath, function (err) {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log("File removed:", filePath);
+          }
+        });
+      }
+    }
+  });
+});
+
+// Get the available video sources
+ipcMain.on('getVideoSources', (event) => getVideoSources(event));
+
+async function getVideoSources(event) {
+  const inputSources = await desktopCapturer.getSources({
+    types: ['window', 'screen']
+  });
+
+  const videoOptionsMenu = Menu.buildFromTemplate(
+    inputSources.map(source => {
+      return {
+        label: source.name,
+        click: () => event.sender.send('selectSource', source),
+      };
+    })
+  );
+
+
+  videoOptionsMenu.popup();
+}
 
 // Menu template
 const menu = [
@@ -107,48 +155,6 @@ const menu = [
     }]
   }] : [])
 ];
-
-// Catergorize and display a frame
-ipcMain.on('catFrame', async (event, filePath) => {
-
-  let options = {
-    mode: 'text',
-    pythonOptions: ['-u'],
-    scriptPath: 'backend',
-    args: [filePath],
-  };
-
-  PythonShell.run('main.py', options, function (err, results) {
-    if(err) throw err;
-    for (let i = 0; i < results.length; i++) {
-      console.log(results[i]);
-    }
-
-  });
-
-});
-
-
-// Get the available video sources
-ipcMain.on('getVideoSources', (event) => getVideoSources(event));
-
-async function getVideoSources(event) {
-  const inputSources = await desktopCapturer.getSources({
-    types: ['window', 'screen']
-  });
-
-  const videoOptionsMenu = Menu.buildFromTemplate(
-    inputSources.map(source => {
-      return {
-        label: source.name,
-        click: () => event.sender.send('selectSource', source),
-      };
-    })
-  );
-
-
-  videoOptionsMenu.popup();
-}
 
 // Quit the application
 app.on('window-all-closed', () => {

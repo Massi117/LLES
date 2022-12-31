@@ -7,7 +7,7 @@ const videoElement = document.querySelector('video');
 
 const startBtn = document.getElementById('startBtn');
 startBtn.onclick = e => {
-  mediaRecorder.start(1000);
+  mediaRecorder.start(10000);
   startBtn.classList.add('is-danger');
   startBtn.innerText = 'Recording';
 };
@@ -73,6 +73,8 @@ async function handleDataAvailable(e) {
   const buffer = Buffer.from(await blob.arrayBuffer());
   const fileName = 'vid-'.concat(Date.now().toString(), '.webm');
   const filePath = path.join(path.backendDir(), fileName);
+
+  console.log(buffer);
 
   fs.writeFile(filePath, buffer, () => console.log('video snippet saved successfully!'));
   ipcRenderer.send('catFrame', filePath);
