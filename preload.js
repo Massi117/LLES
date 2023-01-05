@@ -1,5 +1,7 @@
 const os = require('os');
 const fs = require('fs');
+const tf = require('@tensorflow/tfjs');
+const html2canvas = require('html2canvas');
 const path = require('path');
 const { contextBridge, ipcRenderer, dialog } = require('electron');
 const Toastify = require('toastify-js');
@@ -31,3 +33,12 @@ contextBridge.exposeInMainWorld('fs', {
 contextBridge.exposeInMainWorld('Buffer', {
   from: (...args) => Buffer.from(...args),
 });
+
+contextBridge.exposeInMainWorld('html2canvas', {
+  init: (...args) => html2canvas(...args),
+});
+
+contextBridge.exposeInMainWorld('tf', {
+  fromPixels: (...args) => tf.browser.fromPixels(...args).resizeBilinear([64, 64]).array(),
+});
+

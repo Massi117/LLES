@@ -1,13 +1,16 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, desktopCapturer } = require('electron');
 const { PythonShell } = require('python-shell');
+const tf = require('@tensorflow/tfjs');
+const tfNode = require('@tensorflow/tfjs-node');
 const path = require('path');
-const { writeFile, unlink } = require('fs');
+const { unlink, fstat, readFile } = require('fs');
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
 
 let mainWindow;
-let aboutWindow;
+let model;
+tf.loadLayersModel('file://models/ES_v1/model.json').then((val) => model = val);
 
 // Crete the main window
 function createMainWindow() {
@@ -18,7 +21,8 @@ function createMainWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      devTools: true,
     }
   });
 
@@ -28,6 +32,8 @@ function createMainWindow() {
   }
 
   mainWindow.loadFile(path.join(__dirname, './renderer/main.html'));
+
+  return mainWindow
 }
 
 // Create the about window
@@ -59,7 +65,7 @@ ipcMain.on('openSrcSelect', createSourceSelectWindow);
 
 // App is ready
 app.whenReady().then(() => {
-  createMainWindow();
+  mainWindow = createMainWindow();
 
   // Implement menu
   const mainMenu = Menu.buildFromTemplate(menu);
@@ -77,30 +83,21 @@ app.whenReady().then(() => {
 });
 
 // Catergorize and display a frame
-ipcMain.on('catFrame', async (event, filePath) => {
+ipcMain.on('catFrame', async (event, array) => {
 
-  let options = {
-    mode: 'text',
-    pythonOptions: ['-u'],
-    scriptPath: 'backend',
-    args: [filePath],
-  };
+  var tensor = tf.tensor(array).reshape([1, 64, 64, 3]);
+  var prediction = model.predict(tensor);
 
-  PythonShell.run('main.py', options, function (err, results) {
-    if(err) throw err;
-    for (let i = 0; i < results.length; i++) {
-      console.log(results[i]);
-      if (results[i] == 'categorization complete') {
-        unlink(filePath, function (err) {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log("File removed:", filePath);
-          }
-        });
-      }
-    }
-  });
+  prediction = await prediction.array();
+
+  if (prediction[0][0] >= prediction[0][1]) {
+    // Eyes are closed
+    console.log('Eyes Closed');
+  } else {
+    // Eyes are open
+    console.log('Eyes Open');
+  }
+
 });
 
 // Get the available video sources

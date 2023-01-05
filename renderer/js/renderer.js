@@ -1,19 +1,27 @@
-
 // Global state
 let mediaRecorder; // MediaRecorder instance to capture footage
 
+// Sections
+const welcome = document.getElementById('welcome');
+const main = document.getElementById('main');
+
+// Video
+const videoElement = document.getElementById('recording');
+
 // Buttons
-const videoElement = document.querySelector('video');
+const startupBtn = document.getElementById('startupBtn');
+startupBtn.onclick = e => {
+  main.removeAttribute("hidden"); 
+};
 
 const startBtn = document.getElementById('startBtn');
 startBtn.onclick = e => {
-  mediaRecorder.start(10000);
+  mediaRecorder.start(2000);
   startBtn.classList.add('is-danger');
   startBtn.innerText = 'Recording';
 };
 
 const stopBtn = document.getElementById('stopBtn');
-
 stopBtn.onclick = e => {
   mediaRecorder.stop();
   startBtn.classList.remove('is-danger');
@@ -65,21 +73,19 @@ async function selectSource(source) {
 
 // Sends data for categorization for every timeslice
 async function handleDataAvailable(e) {
-
-  const blob = new Blob([e.data], {
-    type: 'video/webm'
-  });
-
-  const buffer = Buffer.from(await blob.arrayBuffer());
-  const fileName = 'vid-'.concat(Date.now().toString(), '.webm');
-  const filePath = path.join(path.backendDir(), fileName);
-
-  console.log(buffer);
-
-  fs.writeFile(filePath, buffer, () => console.log('video snippet saved successfully!'));
-  ipcRenderer.send('catFrame', filePath);
-
+  var array = await tf.fromPixels(videoElement); 
+  ipcRenderer.send('catFrame', array);
 }
+
+// Displaying the eye score
+ipcRenderer.on('eyesOpen', (open) => {
+  const display = document.getElementById('result');
+  if (open) {
+    display.innerText = 'Eye Score: 9';
+  } else {
+    display.innerText = 'Eye Score: 0';
+  }
+})
 
 function startStream() {
   ipcRenderer.send('stream:start');
@@ -90,9 +96,6 @@ function openSourceSelectWindow() {
 }
 
 // Event listensers
-
-// Camera stream start listener
-//startBtn.addEventListener('click', startStream);
 
 // Select Source 
 //selectSrcBtn.addEventListener('click', openSourceSelectWindow);
