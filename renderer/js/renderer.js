@@ -7,25 +7,32 @@ const main = document.getElementById('main');
 
 // Video
 const videoElement = document.getElementById('recording');
+const videoTitle = document.getElementById('vid-title');
+
+// Results
+const display = document.getElementById('result');
 
 // Buttons
 const startupBtn = document.getElementById('startupBtn');
 startupBtn.onclick = e => {
+  welcome.style.display = 'none';
   main.removeAttribute("hidden"); 
 };
 
 const startBtn = document.getElementById('startBtn');
 startBtn.onclick = e => {
-  mediaRecorder.start(2000);
-  startBtn.classList.add('is-danger');
-  startBtn.innerText = 'Recording';
+  mediaRecorder.start(100);
+  startBtn.style.display = 'none';
+  stopBtn.style.display = 'block';
 };
 
 const stopBtn = document.getElementById('stopBtn');
 stopBtn.onclick = e => {
   mediaRecorder.stop();
-  startBtn.classList.remove('is-danger');
+  startBtn.style.display = 'block';
+  stopBtn.style.display = 'none';
   startBtn.innerText = 'Start';
+  display.innerText = '__';
 };
 
 const videoSelectBtn = document.getElementById('videoSelectBtn');
@@ -42,7 +49,7 @@ function getVideoSources() {
 async function selectSource(source) {
 
   winName = source.name;
-  videoSelectBtn.innerText = winName;
+  videoTitle.innerText = winName;
 
   const constraints = {
     audio: false,
@@ -78,14 +85,10 @@ async function handleDataAvailable(e) {
 }
 
 // Displaying the eye score
-ipcRenderer.on('eyesOpen', (open) => {
-  const display = document.getElementById('result');
-  if (open) {
-    display.innerText = 'Eye Score: 9';
-  } else {
-    display.innerText = 'Eye Score: 0';
-  }
-})
+ipcRenderer.on('results', (score) => {
+  display.innerText = score;
+
+});
 
 function startStream() {
   ipcRenderer.send('stream:start');

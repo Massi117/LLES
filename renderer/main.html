@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/btn.css" />
+    <link rel="stylesheet" href="css/card.css" />
     <script src="js/renderer.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
     <title>Lewis Lab Eye Scorer</title>
 </head>
 <body>
 
-    <div id="welcome">
-        <h1>Welcome to the Lewis Lab Eye Scorer</h1>
-        <button id="startupBtn" class="button is-primary">Get Started</button>
+    <div class="center title-card" id="welcome">
+        <img class="main-logo" alt="LLES Logo" src="./images/eye-logo.svg"/>
+        <h1 class="title">Welcome to the Lewis Lab Eye Scorer</h1>
+        <button id="startupBtn" class="custom-btn first center">Get Started</button>
     </div>
 
-
     <div id="main" hidden>
-        <h1>Lewis Lab Eye Scorer</h1>
 
-        <di id="capture">
+        <div class="video-card">
+            <p id="vid-title" class="video-title">Video Source</p>
             <video id="recording"></video>
         </div>
 
-        <button id="startBtn" class="button is-primary">Start</button>
-        <button id="stopBtn" class="button is-warning">Stop</button>
-        <button id="videoSelectBtn" class="button is-text">Choose a Video Source</button>
-        <p id="result"></p>
+        <div class="in-row">
+            <button id="startBtn" class="custom-btn first center">Start</button>
+            <button id="stopBtn" class="custom-btn first center" style="display: none;">Stop</button>   
+        </div>
+
+        <div class="in-row">
+            <button id="videoSelectBtn" class="custom-btn first center">Source Select</button>
+        </div>
+
+        <div class="result-card">
+            <p class="result-title">Current Eye Score</p>
+            <p class="result" id="result">__</p>
+        </div>
+
+        
     </div>
+
+    
     
 </body>
 </html>

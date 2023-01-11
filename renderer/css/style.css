@@ -1,16 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    padding: 0;
-    margin: 0;
-  }
-  
-video {
-  width: 100%;
-  height: auto;
-}
-  
-body {
-  text-align: center;
-  padding-top: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('../images/background.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
+
+
+.title {
+  text-align: center;
+  color: white;
+}
+
+.main-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 15vw;
+}
+
+.bg-settings {
+  aspect-ratio: 960/200;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+  z-index: -1;
+}
+
+.footer {
+  background-image: url('../images/footer-waves.svg');
+  position: fixed;
+  bottom: 0;
+}
+
+/* Video Stream */
+video {
+  width: 80%;
+  height: auto;
+  max-height: 50vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.video-title {
+  text-align: center;
+  font-size: 1.6rem;
+  color: white;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.in-row {
+  display: inline-block;
+  width: 48vw;
+  margin: 0;
+}
+
+.result-title {
+  text-align: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.result {
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
+}

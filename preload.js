@@ -1,10 +1,8 @@
 const os = require('os');
 const fs = require('fs');
 const tf = require('@tensorflow/tfjs');
-const html2canvas = require('html2canvas');
 const path = require('path');
-const { contextBridge, ipcRenderer, dialog } = require('electron');
-const Toastify = require('toastify-js');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('os', {
   homedir: () => os.homedir()
@@ -22,20 +20,12 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     ipcRenderer.on(channel, (event, ...args) => func(...args)),
 });
 
-contextBridge.exposeInMainWorld('Toastify', {
-  toast: (options) => Toastify(options).showToast(),
-});
-
 contextBridge.exposeInMainWorld('fs', {
   writeFile: (filePath, buffer, func) => fs.writeFile(filePath, buffer, (...args) => func(...args)),
 });
 
 contextBridge.exposeInMainWorld('Buffer', {
   from: (...args) => Buffer.from(...args),
-});
-
-contextBridge.exposeInMainWorld('html2canvas', {
-  init: (...args) => html2canvas(...args),
 });
 
 contextBridge.exposeInMainWorld('tf', {

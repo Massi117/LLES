@@ -1,9 +1,7 @@
-const { app, BrowserWindow, Menu, ipcMain, shell, desktopCapturer } = require('electron');
-const { PythonShell } = require('python-shell');
+const { app, BrowserWindow, Menu, ipcMain, desktopCapturer } = require('electron');
 const tf = require('@tensorflow/tfjs');
 const tfNode = require('@tensorflow/tfjs-node');
 const path = require('path');
-const { unlink, fstat, readFile } = require('fs');
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
@@ -16,8 +14,8 @@ tf.loadLayersModel('file://models/ES_v1/model.json').then((val) => model = val);
 function createMainWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Lewis Lab Eye Scorer',
-    width: isDev ? 1000 : 500,
-    height: 600,
+    width: isDev ? 750 : 500,
+    height: 800,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: true,
@@ -92,9 +90,11 @@ ipcMain.on('catFrame', async (event, array) => {
 
   if (prediction[0][0] >= prediction[0][1]) {
     // Eyes are closed
+    event.sender.send('results', '0');
     console.log('Eyes Closed');
   } else {
     // Eyes are open
+    event.sender.send('results', '9');
     console.log('Eyes Open');
   }
 

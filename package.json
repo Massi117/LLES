@@ -9,13 +9,10 @@
   "author": "Massinissa Bosli",
   "license": "MIT",
   "dependencies": {
-    "@canvas/image-data": "^1.0.0",
     "@mapbox/node-pre-gyp": "^1.0.10",
     "@tensorflow/tfjs": "^4.2.0",
     "@tensorflow/tfjs-node": "^4.2.0",
-    "html2canvas": "^1.4.1",
-    "python-shell": "^3.0.1",
-    "toastify-js": "^1.12.0"
+    "electron": "^22.0.0"
   },
   "devDependencies": {
     "electron-devtools-installer": "^3.2.0"
