@@ -16,6 +16,7 @@ function createMainWindow() {
     title: 'Lewis Lab Eye Scorer',
     width: isDev ? 750 : 500,
     height: 800,
+    icon: path.join(__dirname, './renderer/images/LLES-icon.ico'),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: true,

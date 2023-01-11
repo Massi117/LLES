@@ -1,9 +1,13 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" id="eye" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" id="eye" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color">
 <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
 <g id="SVGRepo_iconCarrier">
-<path id="secondary" d="M19.79,11.38C19.65,11.2,16.3,7,12,7s-7.65,4.2-7.79,4.38a1,1,0,0,0,0,1.24C4.35,12.8,7.7,17,12,17s7.65-4.2,7.79-4.38A1,1,0,0,0,19.79,11.38Z" style="fill: #D279EE;"/>
-<path id="primary" d="M15,12a3,3,0,1,1-3-3A3,3,0,0,1,15,12ZM4,7V4H7A1,1,0,0,0,7,2H4A2,2,0,0,0,2,4V7A1,1,0,0,0,4,7ZM22,7V4a2,2,0,0,0-2-2H17a1,1,0,0,0,0,2h3V7a1,1,0,0,0,2,0ZM8,21a1,1,0,0,0-1-1H4V17a1,1,0,0,0-2,0v3a2,2,0,0,0,2,2H7A1,1,0,0,0,8,21Zm14-1V17a1,1,0,0,0-2,0v3H17a1,1,0,0,0,0,2h3A2,2,0,0,0,22,20Z" style="fill: #000000;"/>
+<path id="secondary" d="M19,12s-3.13,4-7,4-7-4-7-4,3.13-4,7-4S19,12,19,12Zm-7-2a2,2,0,1,0,2,2A2,2,0,0,0,12,10Z" style="fill: none; stroke: #bab5f6; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+<path id="primary" d="M3,7V4A1,1,0,0,1,4,3H7" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+<path id="primary-2" data-name="primary" d="M21,7V4a1,1,0,0,0-1-1H17" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+<path id="primary-3" data-name="primary" d="M3,17v3a1,1,0,0,0,1,1H7" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+<path id="primary-4" data-name="primary" d="M21,17v3a1,1,0,0,1-1,1H17" style="fill: none; stroke: #ffffff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
 </g>
 </svg>

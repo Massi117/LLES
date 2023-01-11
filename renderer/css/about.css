@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.about-body {
+  background-image: url('../images/about-background.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.title {
+    text-align: center;
+    color: white;
+    font-size: large;
+}
+
+.text {
+    text-align: center;
+    color: white;
+    font-size: medium;
+}
+
+.icon {
+    margin: auto;
+    display: block;
+    padding: 20px;
+    width: 15vw
+}
