@@ -16,7 +16,7 @@ function createMainWindow() {
     title: 'Lewis Lab Eye Scorer',
     width: isDev ? 750 : 500,
     height: 800,
-    icon: path.join(__dirname, './renderer/images/LLES-icon.ico'),
+    icon: path.join(__dirname, './renderer/images/LLES-icon'),
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: true,
@@ -92,11 +92,11 @@ ipcMain.on('catFrame', async (event, array) => {
   if (prediction[0][0] >= prediction[0][1]) {
     // Eyes are closed
     event.sender.send('results', '0');
-    console.log('Eyes Closed');
+    //console.log('Eyes Closed');
   } else {
     // Eyes are open
     event.sender.send('results', '9');
-    console.log('Eyes Open');
+    //console.log('Eyes Open');
   }
 
 });
