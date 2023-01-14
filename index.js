@@ -6,9 +6,12 @@ const path = require('path');
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
 
+const __modelpath = 'file://'.concat(__dirname.substring(2), '/models/ES_v1/model.json');
+
 let mainWindow;
 let model;
-tf.loadLayersModel('file://models/ES_v1/model.json').then((val) => model = val);
+
+tf.loadLayersModel(__modelpath).then((val) => model = val);
 
 // Crete the main window
 function createMainWindow() {
